@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "Majik Maker — Intention Studio",
+  "short_name": "Majik Maker",
+  "description": "Turn a vision image and an intention into a personal geometric symbol.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#111923",
+  "theme_color": "#111923",
+  "lang": "en",
+  "categories": ["lifestyle", "graphics"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
