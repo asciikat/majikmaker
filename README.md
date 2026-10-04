@@ -1,5 +1,7 @@
 # Majik Maker
 
+[Open the app](https://asciikat.github.io/majikmaker/)
+
 An installable web app for phone and desktop. Upload a vision image, write an intention, choose a geometry, and create a personal sigil. Export it as a 1600 × 1600 PNG or scalable SVG. On supported phones, “Save image” opens the native file-sharing sheet.
 
 The symbol is generated entirely on your device from your image’s sampled pixels, luminance, contrast, color balance, and intention text. Orbital, Resonance, and Entangled modes draw on the visual language of orbits, waves, and connected forms. Quantum physics does not establish that symbols or thoughts manifest objects or influence external events; this is a creative practice for reflection and visualization.
@@ -40,6 +42,6 @@ npm test
 
 `app/symbol.js` contains the deterministic geometric generator. `app/app.js` handles browser-only image processing and exports. `app/install.js` handles install prompts and device instructions. `app/sw.js` caches the app shell and local assets. Bump `CACHE_NAME` in `app/sw.js` whenever shipped assets change.
 
-Automated checks cover symbol determinism and variation, SVG integrity, service-worker install/activation/fetch behavior, scoped offline navigation, asset completeness, and manifest paths. Native installation and iOS file sharing still need verification on real devices; a browser automation run was unavailable in the build environment.
+Automated checks cover symbol determinism and variation, SVG integrity, service-worker install/activation/fetch behavior, scoped offline navigation, asset completeness, and manifest paths. The GitHub Actions browser check verifies the desktop and phone layouts (320–1440 px), real image upload, PNG/SVG exports, dialogs, and offline reload/generation. It saves desktop and phone previews as an Actions artifact. Native installation and iOS file sharing still need verification on real devices.
 
 The bundled dream-home image is an AI-generated example, not a photo of an identified property.
