@@ -5,7 +5,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../app/sw.js'),'utf8');
 function setup(){
- const handlers={},scope='https://example.test/majikmaker/',stored=new Map(),cacheNames=['other-app-v1','majikmaker-v0','majikmaker-v1'],deleted=[];
+ const handlers={},scope='https://example.test/majikmaker/',stored=new Map(),cacheNames=['other-app-v1','majikmaker-v0',source.match(/CACHE_NAME='([^']+)'/)[1]],deleted=[];
  const key=x=>new URL(typeof x==='string'?x:x.url,scope).href;
  const cache={async addAll(paths){for(const p of paths)stored.set(key(p),new Response(p));},async match(req){return stored.get(key(req))?.clone();},async put(req,res){stored.set(key(req),res.clone());}};
  let network=true,requests=0,skipped=false,claimed=false;

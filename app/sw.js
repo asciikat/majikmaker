@@ -1,5 +1,5 @@
 'use strict';
-const CACHE_NAME='majikmaker-v1';
+const CACHE_NAME='majikmaker-v2';
 const ASSETS=['./index.html','./styles.css','./symbol.js','./app.js','./install.js','./sample-home.jpg','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
 const assetUrls=new Set(ASSETS.map(path=>new URL(path,self.registration.scope).href));
 self.addEventListener('install',event=>{
