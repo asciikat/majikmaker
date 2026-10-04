@@ -1,0 +1,1 @@
+export const APP_FILES=['.nojekyll','index.html','styles.css','symbol.js','app.js','install.js','sw.js','manifest.webmanifest','sample-home.jpg','icons/icon-192.png','icons/icon-512.png','icons/icon-maskable-512.png','icons/apple-touch-icon.png'];

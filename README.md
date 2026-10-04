@@ -14,7 +14,7 @@ Install Node.js 20 or later, then run:
 npm start
 ```
 
-Open `http://127.0.0.1:4173`. No dependency installation, build, API key, or backend is required. Opening `app/index.html` directly allows basic editing, but installation, service workers, and the example photo require the local server or an HTTPS host.
+Open `http://127.0.0.1:4173`. No dependency installation, build, API key, or backend is required. Opening `index.html` directly allows basic editing, but installation, service workers, and the example photo require the local server or an HTTPS host.
 
 ## Install on phone or desktop
 
@@ -29,9 +29,11 @@ This is a progressive web app (PWA), rather than an App Store package. It launch
 
 ## Deploy to GitHub Pages
 
-The included GitHub Actions workflow publishes the `app/` directory. In this repository’s **Settings → Pages**, select **GitHub Actions** as the source, then run **Deploy Majik Maker** from the Actions tab (or push a change to `main`). The repository must allow Pages and the Pages deployment environment.
+The app’s `index.html` and assets live at the repository root, so **Deploy from a branch → main → / (root)** works directly. A `.nojekyll` file keeps the app static and prevents README rendering from replacing it.
 
-Relative paths allow deployment at `/majikmaker/` or at a domain root. Once Pages reports a successful deployment, use its displayed URL to open and install the app. Other static HTTPS hosts can serve `app/` unchanged.
+The included GitHub Actions workflow also builds the public app into `dist/` and publishes it. It works when **GitHub Actions** is the selected Pages source. Both publishing paths serve the same app.
+
+Relative paths allow deployment at `/majikmaker/` or at a domain root. Once Pages reports a successful deployment, use its displayed URL to open and install the app. Other static HTTPS hosts can serve the output of `npm run build` from `dist/`.
 
 ## Development
 
@@ -40,8 +42,8 @@ npm run check
 npm test
 ```
 
-`app/symbol.js` contains the deterministic geometric generator. `app/app.js` handles browser-only image processing and exports. `app/install.js` handles install prompts and device instructions. `app/sw.js` caches the app shell and local assets. Bump `CACHE_NAME` in `app/sw.js` whenever shipped assets change.
+`symbol.js` contains the deterministic geometric generator. `app.js` handles browser-only image processing and exports. `install.js` handles install prompts and device instructions. `sw.js` caches the app shell and local assets. Bump `CACHE_NAME` in `sw.js` whenever shipped assets change.
 
-Automated checks cover symbol determinism and variation, SVG integrity, service-worker install/activation/fetch behavior, scoped offline navigation, asset completeness, and manifest paths. The GitHub Actions browser check verifies the desktop and phone layouts (320–1440 px), real image upload, PNG/SVG exports, dialogs, and offline reload/generation. It saves desktop and phone previews as an Actions artifact. Native installation and iOS file sharing still need verification on real devices.
+Automated checks cover symbol determinism and variation, SVG integrity, service-worker install/activation/fetch behavior, scoped offline navigation, asset completeness, and manifest paths. The GitHub Actions browser check verifies the built app under the GitHub Pages `/majikmaker/` path, desktop and phone layouts (320–1440 px), real image upload, PNG/SVG exports, dialogs, and offline reload/generation. It saves desktop and phone previews as an Actions artifact. Publishing also checks that the live Pages URL serves the app and its current service worker. Native installation and iOS file sharing still need verification on real devices.
 
 The bundled dream-home image is an AI-generated example, not a photo of an identified property.

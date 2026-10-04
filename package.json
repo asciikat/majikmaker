@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node scripts/serve.mjs",
     "test": "node --test tests/*.test.cjs",
-    "check": "node --check app/symbol.js && node --check app/app.js && node --check app/install.js && node --check app/sw.js && node --check scripts/serve.mjs"
+    "check": "node --check symbol.js && node --check app.js && node --check install.js && node --check sw.js && node --check scripts/serve.mjs && node --check scripts/build.mjs && node --check scripts/check-live.mjs",
+    "build": "node scripts/build.mjs",
+    "pretest": "npm run build"
   },
-  "engines": {"node": ">=20"}
+  "engines": {
+    "node": ">=20"
+  }
 }

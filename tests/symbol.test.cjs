@@ -1,6 +1,6 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
-const {createSymbol,analyzePixels}=require('../app/symbol.js');
+const {createSymbol,analyzePixels}=require('../symbol.js');
 function pixels(r,g,b){return Uint8ClampedArray.from({length:4096},(_,i)=>[r,g,b,255][i%4]);}
 test('uniform images produce finite metrics and valid SVG geometry',()=>{
  for(const v of [0,1,30,128,255]){

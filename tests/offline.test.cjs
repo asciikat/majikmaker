@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const vm=require('node:vm');
 const fs=require('node:fs');
 const path=require('node:path');
-const source=fs.readFileSync(path.join(__dirname,'../app/sw.js'),'utf8');
+const source=fs.readFileSync(path.join(__dirname,'../sw.js'),'utf8');
 function setup(){
  const handlers={},scope='https://example.test/majikmaker/',stored=new Map(),cacheNames=['other-app-v1','majikmaker-v0',source.match(/CACHE_NAME='([^']+)'/)[1]],deleted=[];
  const key=x=>new URL(typeof x==='string'?x:x.url,scope).href;
@@ -19,7 +19,7 @@ test('installation precaches all app assets; activation only removes its older c
  const s=setup();await s.lifecycle('install');await s.lifecycle('activate');
  assert.ok(s.skipped);assert.ok(s.claimed);assert.deepEqual(s.deleted,['majikmaker-v0']);
  assert.ok(s.stored.has('https://example.test/majikmaker/index.html'));
- for(const url of s.stored.keys())assert.ok(fs.existsSync(path.join(__dirname,'../app',new URL(url).pathname.replace('/majikmaker/',''))),`Missing ${url}`);
+ for(const url of s.stored.keys())assert.ok(fs.existsSync(path.join(__dirname,'..',new URL(url).pathname.replace('/majikmaker/',''))),`Missing ${url}`);
 });
 test('offline navigation at a project subpath opens the cached app shell',async()=>{
  const s=setup();await s.lifecycle('install');s.offline=true;
@@ -37,7 +37,7 @@ test('first-ever offline opening returns a clear 503 rather than a broken shell'
  const s=setup();s.offline=true;const response=await s.fetch('./','navigate');assert.equal(response.status,503);assert.match(await response.text(),/successful online visit/);
 });
 test('manifest uses portable relative paths and supplied icon dimensions',()=>{
- const root=path.join(__dirname,'../app');const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
+ const root=path.join(__dirname,'..');const manifest=JSON.parse(fs.readFileSync(path.join(root,'manifest.webmanifest'),'utf8'));
  assert.equal(manifest.start_url,'./');assert.equal(manifest.scope,'./');assert.equal(manifest.display,'standalone');
  for(const icon of manifest.icons){const data=fs.readFileSync(path.join(root,icon.src));const [w,h]=icon.sizes.split('x').map(Number);assert.equal(data.readUInt32BE(16),w);assert.equal(data.readUInt32BE(20),h);}
 });
