@@ -57,4 +57,30 @@ function analyzePixels(pixels){
  const brightness=sum/count;
  return {brightness,contrast:Math.min(1,Math.sqrt(Math.max(0,square/count-brightness*brightness))*3),warmth:warm/count,hash:h>>>0};
 }
-if(typeof module !== 'undefined') module.exports={hashText,randomFrom,createSymbol,analyzePixels};
+// A contemporary drawing recipe inspired by Spare's simplified alphabet sigils.
+// Deduplication and this five-shape alphabet are design choices of this app.
+const LETTER_STROKES={A:'angle bar',B:'stem curve',C:'curve',D:'stem curve',E:'stem bar',F:'stem bar',G:'curve bar',H:'stem bar',I:'stem',J:'stem curve',K:'stem angle',L:'stem bar',M:'stem angle',N:'stem angle',O:'loop',P:'stem curve',Q:'loop angle',R:'stem curve angle',S:'curve',T:'stem bar',U:'curve',V:'angle',W:'angle',X:'angle',Y:'stem angle',Z:'angle bar'};
+function uniqueLetters(text){return [...new Set(String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z]/g,''))].join('');}
+function strokeSvg(strokes,label='Personal intention symbol'){
+ const safeLabel=label.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 440" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="${safeLabel}"><title>Personal intention symbol</title><g stroke="#e2c79c" stroke-width="7">${strokes.map(s=>`<path d="${s.path}"/>`).join('')}</g></svg>`;
+}
+function createWordSigil(text,variant=0,imageHash=0){
+ const letters=uniqueLetters(text);if(!letters)throw Error('Use at least one letter from A–Z for a word sigil.');
+ const rnd=randomFrom(hashText(letters+'|'+variant+'|'+imageHash));
+ const lean=Math.floor(rnd()*3-1)*25,barY=200+Math.floor(rnd()*3)*25,up=rnd()>.5,left=rnd()>.5,loopY=195+Math.floor(rnd()*3)*25;
+ const recipes={
+  stem:{path:`M${220-lean} 105L${220+lean} 335`,instruction:lean?'Draw one long, slightly slanted line from top to bottom.':'Draw one long vertical line from top to bottom.'},
+  angle:{path:up?'M120 300L220 120L320 300':'M120 140L220 320L320 140',instruction:up?'Draw an open triangle: lower left, top, then lower right.':'Draw a V: upper left, bottom, then upper right.'},
+  bar:{path:`M140 ${barY}L300 ${barY}`,instruction:'Draw a short horizontal line across the middle.'},
+  curve:{path:left?'M140 140C330 105 330 335 140 300':'M300 140C110 105 110 335 300 300',instruction:left?'Draw one rounded curve, open on the left.':'Draw one rounded curve, open on the right.'},
+  loop:{path:`M285 ${loopY}A65 65 0 1 1 155 ${loopY}A65 65 0 1 1 285 ${loopY}`,instruction:'Draw one small closed circle around the middle.'}
+ };
+ const strokes=Object.entries(recipes).flatMap(([kind,shape])=>{const contributors=[...letters].filter(letter=>LETTER_STROKES[letter].split(' ').includes(kind)).join('');return contributors?[{kind,...shape,letters:contributors}]:[];});
+ return {svg:strokeSvg(strokes),letters,strokes};
+}
+function createHistoricalSigil(mark){
+ if(!mark?.strokes?.length)throw Error('Choose a historical mark.');
+ const strokes=mark.strokes.map(s=>({...s}));return {svg:strokeSvg(strokes,mark.name),strokes};
+}
+if(typeof module !== 'undefined') module.exports={hashText,randomFrom,createSymbol,analyzePixels,uniqueLetters,createWordSigil,createHistoricalSigil};

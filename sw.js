@@ -1,6 +1,6 @@
 'use strict';
-const CACHE_NAME='majikmaker-v3';
-const ASSETS=['./index.html','./styles.css','./symbol.js','./app.js','./install.js','./sample-home.jpg','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
+const CACHE_NAME='majikmaker-v4';
+const ASSETS=['./index.html','./styles.css?v=4','./catalog.js?v=4','./symbol.js?v=4','./app.js?v=4','./install.js?v=4','./sample-home.jpg','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
 const assetUrls=new Set(ASSETS.map(path=>new URL(path,self.registration.scope).href));
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));

@@ -24,7 +24,7 @@ test('installation precaches all app assets; activation only removes its older c
 test('offline navigation at a project subpath opens the cached app shell',async()=>{
  const s=setup();await s.lifecycle('install');s.offline=true;
  const response=await s.fetch('./','navigate');assert.equal(response.status,200);assert.equal(await response.text(),'./index.html');
- const script=await s.fetch('symbol.js');assert.equal(await script.text(),'./symbol.js');
+ const script=await s.fetch('symbol.js?v=4');assert.equal(await script.text(),'./symbol.js?v=4');
 });
 test('service worker leaves external, out-of-scope, and non-GET requests alone',async()=>{
  const s=setup();

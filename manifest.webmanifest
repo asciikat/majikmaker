@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Majik Maker — Intention Studio",
   "short_name": "Majik Maker",
-  "description": "Turn a vision image and an intention into a personal geometric symbol.",
+  "description": "Make a simple word sigil you can draw, or explore historical symbols and their meanings.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
